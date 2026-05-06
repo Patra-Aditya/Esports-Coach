@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>CYBER.CORE - Esports Analytics &amp; AI Coaching</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400&amp;family=Space+Grotesk:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#b9cacb",
+                        "surface-tint": "#BF00FF",
+                        "surface-container": "#1f1f25",
+                        "background": "#131318",
+                        "on-surface": "#e4e1e9",
+                        "on-secondary-fixed-variant": "#095300",
+                        "on-primary": "#36003a",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#BF00FF",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface-container-lowest": "#0e0e13",
+                        "surface-container-low": "#1b1b20",
+                        "secondary-fixed": "#ff5b9c",
+                        "tertiary-container": "#ffcdd0",
+                        "outline": "#849495",
+                        "inverse-on-surface": "#303036",
+                        "on-primary-fixed-variant": "#4f0054",
+                        "on-primary-fixed": "#200022",
+                        "surface-bright": "#39383e",
+                        "surface-container-highest": "#35343a",
+                        "primary": "#f0b3ff",
+                        "surface-container-high": "#2a292f",
+                        "on-secondary": "#39001d",
+                        "surface-dim": "#131318",
+                        "inverse-surface": "#e4e1e9",
+                        "on-tertiary-fixed-variant": "#91002d",
+                        "secondary": "#ffc5da",
+                        "on-primary-container": "#690070",
+                        "on-background": "#e4e1e9",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb2b8",
+                        "surface": "#131318",
+                        "tertiary": "#fff3f3",
+                        "on-tertiary": "#67001d",
+                        "on-tertiary-container": "#be003d",
+                        "primary-fixed": "#df7dff",
+                        "on-tertiary-fixed": "#40000f",
+                        "outline-variant": "#3b494b",
+                        "secondary-container": "#FF007F",
+                        "on-secondary-container": "#6d0033",
+                        "secondary-fixed-dim": "#e5006b",
+                        "on-secondary-fixed": "#21000f",
+                        "surface-variant": "#35343a",
+                        "inverse-primary": "#690070",
+                        "primary-container": "#BF00FF"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "data-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "headline-xl": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "data-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+                        "data-lg": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0A0A0F;
+            background-image:
+                linear-gradient(rgba(191, 0, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(191, 0, 255, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .scan-line {
+            background: linear-gradient(to bottom, transparent, rgba(191, 0, 255, 0.1) 50%, transparent);
+            background-size: 100% 4px;
+        }
+
+        .hud-border {
+            position: relative;
+        }
+
+        .hud-border::before,
+        .hud-border::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 1px solid theme('colors.surface-tint');
+        }
+
+        .hud-border::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .hud-border::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+    </style>
+</head>
+
+<body class="text-on-background min-h-screen flex flex-col pt-24 font-body-md text-body-md">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full z-50 flex justify-between items-center px-margin py-4 max-w-container-max mx-auto bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_15px_rgba(191,0,255,0.1)]">
+        <div class="flex items-center gap-8">
+            <span
+                class="font-headline-lg text-headline-lg font-bold text-surface-tint italic tracking-tighter">CYBER.CORE</span>
+            <div class="hidden md:flex gap-6">
+                <a class="text-surface-tint font-bold border-b-2 border-surface-tint pb-1 text-data-sm font-data-sm hover:text-primary hover:drop-shadow-[0_0_8px_rgba(240,179,255,0.8)] transition-all transform hover:scale-95 duration-75"
+                    href="#">Dashboard</a>
+                <a class="text-on-surface-variant font-medium text-data-sm font-data-sm hover:text-primary hover:drop-shadow-[0_0_8px_rgba(240,179,255,0.8)] transition-all transform hover:scale-95 duration-75"
+                    href="#">Coaching</a>
+                <a class="text-on-surface-variant font-medium text-data-sm font-data-sm hover:text-primary hover:drop-shadow-[0_0_8px_rgba(240,179,255,0.8)] transition-all transform hover:scale-95 duration-75"
+                    href="#">Leaderboards</a>
+                <a class="text-on-surface-variant font-medium text-data-sm font-data-sm hover:text-primary hover:drop-shadow-[0_0_8px_rgba(240,179,255,0.8)] transition-all transform hover:scale-95 duration-75"
+                    href="#">Teams</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button
+                class="hidden md:flex items-center gap-2 border border-surface-tint px-4 py-2 font-data-sm text-data-sm text-surface-tint hover:bg-surface-tint/10 transition-colors hud-border">
+                <span class="material-symbols-outlined text-[16px]">sync</span>
+                SYNC ACCOUNT
+            </button>
+            <div
+                class="w-10 h-10 rounded border border-outline-variant/50 overflow-hidden relative group cursor-pointer">
+                <img alt="User Avatar" class="w-full h-full object-cover"
+                    data-alt="A futuristic, cybernetic portrait of a professional esports athlete. The athlete is illuminated by striking neon electric blue and toxic green lighting, creating a high-contrast, moody aesthetic. They wear high-tech augmented reality tactical gear against a deep #0A0A0F void background. The overall style is gritty, advanced cyber-brutalism."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOGMbNP2aX0ITEuaDKpnVRbYMszFXGbWlmNnx6mpM_yXJwaAOyxCRiU4xOlmhrI6fI5mne6kVHEkEv0iaYR01hr_U-elvLbytUwXlro1MYEf66C-H3YEM0i3eqpSzQ54948I0j28Ul4hqRT0ItbMG78v8ahb5UY3adNLN_lIRUFXHm7aptW3D5HGc-9SG_BAp2jgTjlEi9-dCAYOsm817-cHnUzrFHYVRr_XCvOldGyxV6jin6w2JopTH-TpcwtJn8yYLSIU48tn4" />
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main
+        class="flex-grow max-w-container-max mx-auto w-full px-margin py-8 grid grid-cols-1 md:grid-cols-12 gap-gutter relative">
+        <!-- Hero Section (Spans full width) -->
+        <section
+            class="col-span-1 md:col-span-12 min-h-[614px] flex flex-col md:flex-row items-center gap-margin relative mb-16">
+            <div class="md:w-1/2 flex flex-col gap-6 z-10">
+                <div
+                    class="inline-flex items-center gap-2 bg-surface-container/50 border border-outline-variant/30 px-3 py-1 font-data-sm text-data-sm w-fit hud-border text-secondary-container">
+                    <span class="material-symbols-outlined text-[14px]">cell_tower</span>
+                    [ STATUS: SYSTEM ONLINE ]
+                </div>
+                <h1 class="font-headline-xl text-headline-xl text-primary drop-shadow-[0_0_15px_rgba(191,0,255,0.3)]">
+                    DOMINATE THE LADDER WITH <span class="text-surface-tint italic">AI PRECISION</span>
+                </h1>
+                <p class="text-on-surface-variant max-w-xl">
+                    CYBER.CORE ingests thousands of match data points in real-time, providing actionable telemetry and
+                    strategy drills to elevate your gameplay to professional tiers.
+                </p>
+                <div class="flex gap-4 mt-4">
+                    <button
+                        class="bg-surface-tint/10 border border-surface-tint px-6 py-3 font-data-sm text-data-sm text-surface-tint hover:bg-surface-tint/20 transition-colors hud-border flex items-center gap-2 drop-shadow-[0_0_10px_rgba(191,0,255,0.2)]">
+                        <span class="material-symbols-outlined">rocket_launch</span>
+                        INITIATE CALIBRATION
+                    </button>
+                    <button
+                        class="border border-outline-variant px-6 py-3 font-data-sm text-data-sm text-on-surface hover:text-primary hover:border-outline transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined">terminal</span>
+                        VIEW PROTOCOLS
+                    </button>
+                </div>
+            </div>
+            <!-- Holographic Globe / Vis Area -->
+            <div
+                class="md:w-1/2 h-[400px] md:h-[500px] w-full relative rounded-lg border border-outline-variant/20 bg-surface-container-low/50 backdrop-blur-md overflow-hidden hud-border flex items-center justify-center scan-line">
+                <!-- Abstract Globe Representation using CSS/Image placeholder -->
+                <img alt="Holographic Data Vis" class="w-full h-full object-cover opacity-40 mix-blend-screen"
+                    data-alt="A complex, three-dimensional holographic projection of a futuristic globe suspended in a dark #0A0A0F void. The globe is constructed entirely of glowing, neon electric blue and deep cyan geometric wireframes and data nodes. Subtle scanning lines and lens flares emphasize the high-tech, cyber-brutalist heads-up display (HUD) aesthetic. It represents global live match telemetry in an esports context."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZKBa55uPeWkn4KwLUwueUgCjLpmVk3Ka_rHSSZdHCdOGRgeHoPPUgZ3XJU2KNlYLmnjvziLwd8fleeOHb8LvX2Qa39xWDfMMlStdxPYM56yjNjb1ISLvtwLz_ljSpPSqa7lbq7EmBJ5VzrFSHlYGdjQpNmbV5pUSe5Vq8dNjE6_BVmLaVmrAf71xcpvIUBVlLxt-OSEDz_JSWPODDZcYcUCe3LBUNWNARTG-xpL_65b-PTw8DwuWOup2lLgwCBcV_kwS7r4wBuTk" />
+                <!-- Overlay Data Nodes -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div
+                        class="relative w-64 h-64 border border-surface-tint/30 rounded-full animate-[spin_60s_linear_infinite]">
+                        <div
+                            class="absolute top-0 left-1/2 w-2 h-2 bg-surface-tint rounded-full drop-shadow-[0_0_8px_rgba(191,0,255,1)]">
+                        </div>
+                        <div
+                            class="absolute bottom-1/4 right-0 w-2 h-2 bg-secondary-container rounded-full drop-shadow-[0_0_8px_rgba(255,0,127,1)]">
+                        </div>
+                    </div>
+                </div>
+                <!-- Floating HUD Chip -->
+                <div
+                    class="absolute top-4 right-4 bg-background/80 border border-outline-variant px-2 py-1 font-data-sm text-data-sm text-surface-tint flex items-center gap-2 backdrop-blur-sm">
+                    <span class="w-1.5 h-1.5 bg-secondary-container rounded-full animate-pulse"></span>
+                    LIVE MATCH NODES
+                </div>
+            </div>
+        </section>
+        <!-- Bento Grid Analytics Cards -->
+        <section class="col-span-1 md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-gutter mb-16">
+            <!-- Card 1: Win Rate -->
+            <div
+                class="bg-surface-container-low/80 backdrop-blur-md border border-outline-variant/30 p-6 flex flex-col gap-4 hud-border hover:border-surface-tint/50 transition-colors group">
+                <div class="flex justify-between items-start">
+                    <h3 class="font-data-sm text-data-sm text-on-surface-variant flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        WIN RATE DELTA
+                    </h3>
+                    <span
+                        class="font-data-sm text-data-sm text-secondary-container bg-secondary-container/10 px-1">+4.2%</span>
+                </div>
+                <div class="flex-grow flex items-center justify-center py-4">
+                    <!-- Circular Gauge Proxy -->
+                    <div
+                        class="relative w-32 h-32 rounded-full border-4 border-surface-container flex items-center justify-center">
+                        <div
+                            class="absolute inset-0 rounded-full border-4 border-t-secondary-container border-r-secondary-container border-b-transparent border-l-transparent transform rotate-45">
+                        </div>
+                        <span class="font-headline-lg text-headline-lg text-primary">68%</span>
+                    </div>
+                </div>
+                <p
+                    class="font-data-sm text-data-sm text-outline group-hover:text-surface-tint transition-colors text-center">
+                    CURRENT PERFORMANCE CYCLE</p>
+            </div>
+            <!-- Card 2: Heatmap -->
+            <div
+                class="bg-surface-container-low/80 backdrop-blur-md border border-outline-variant/30 p-6 flex flex-col gap-4 hud-border hover:border-surface-tint/50 transition-colors group md:col-span-2">
+                <div class="flex justify-between items-start">
+                    <h3 class="font-data-sm text-data-sm text-on-surface-variant flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">map</span>
+                        TACTICAL HEATMAP
+                    </h3>
+                    <span class="font-data-sm text-data-sm text-surface-tint">[ SECTOR 7G ]</span>
+                </div>
+                <div
+                    class="flex-grow bg-surface-dim border border-outline-variant/20 relative overflow-hidden flex items-center justify-center min-h-[160px] scan-line">
+                    <img alt="Heatmap Data"
+                        class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-screen"
+                        data-alt="A highly detailed, stylized tactical heatmap representation of a digital battlefield. The imagery utilizes a deep #0A0A0F void background overlaid with glowing, intense concentrations of toxic green and neon electric blue pixels indicating high-activity zones. The aesthetic is extremely high-tech cyber-brutalism, resembling an advanced military or esports command center monitor."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5r_XQyzV06qA4O_Oia-2hZfu8WWMqS4D5a4X1IvXuUYRGR82WmoICSrvudljJk417MQ4emdXA0R2B8Xtr6YXDtWbXZt4iqaUgofjdYPeGQeEdXzov12RDt8KIw0RmJx5-RHKpe7Hslt_86706PW--TsLWdoMp2_O6rHQ5w-hMp7CyhijOZXr_G32d1f21ClxHcTMs0nrdN8K2gSizXW4-llLNbW7Nj6n-7Btb2g1yc7UIMaihhbShyJ_NToKT_3Q0Mw1yX2APQFY" />
+                    <div
+                        class="z-10 bg-background/80 border border-outline-variant px-3 py-1 font-data-sm text-data-sm text-primary backdrop-blur-sm">
+                        ANALYZING POSITIONAL DATA...
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="w-full py-gutter px-margin flex flex-col md:flex-row justify-between items-center gap-4 bg-surface-container-lowest border-t border-outline-variant/30 mt-auto z-10">
+        <div class="font-headline-lg text-surface-tint text-[20px] font-bold tracking-tighter">
+            CYBER.CORE
+        </div>
+        <div class="font-data-sm text-data-sm text-outline">
+            © 2024 CYBER.CORE ANALYTICS // ENCRYPTED CONNECTION SECURE
+        </div>
+        <div class="flex gap-4">
+            <a class="font-data-sm text-data-sm text-on-surface-variant hover:text-secondary transition-all hover:underline hover:underline-offset-4"
+                href="#">System Status</a>
+            <a class="font-data-sm text-data-sm text-on-surface-variant hover:text-secondary transition-all hover:underline hover:underline-offset-4"
+                href="#">API Documentation</a>
+            <a class="font-data-sm text-data-sm text-on-surface-variant hover:text-secondary transition-all hover:underline hover:underline-offset-4"
+                href="#">Protocol Privacy</a>
+            <a class="font-data-sm text-data-sm text-on-surface-variant hover:text-secondary transition-all hover:underline hover:underline-offset-4"
+                href="#">Neural Terms</a>
+        </div>
+    </footer>
+</body>
+
+</html>
+{% endblock %}
