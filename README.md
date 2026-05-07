@@ -19,7 +19,7 @@ An AI-powered application designed to provide competitive gaming insights and st
 ## 📋 Prerequisites
 Before running the project, ensure you have:
 * Python 3.10+
-* A Google Gemini API Key
+* A Google API Key
 
 ## ⚙️ Setup Instructions
 
