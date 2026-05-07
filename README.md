@@ -12,7 +12,7 @@ An AI-powered application designed to provide competitive gaming insights and st
 ## 🛠️ Tech Stack
 * **Framework:** Django (Python)
 * **AI Orchestration:** LangChain
-* **LLM:** Google Gemini API
+* **LLM:** Google Open AI API
 * **Vector Database:** ChromaDB
 * **Frontend:** Django Templates & HTML/CSS
 
